@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SocketService } from './services/socket.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,6 @@ export class AppComponent {
 
   constructor(private socketService: SocketService) {
     this.socketService.startSocket();
+    console.log(environment.apiUrl, 'apiUrl')
   }
 }
