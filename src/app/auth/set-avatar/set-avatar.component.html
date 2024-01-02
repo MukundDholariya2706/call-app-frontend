@@ -1,0 +1,21 @@
+<div class="avatar-container">
+  <div class="title-container">
+    <h1>Pick an Avatar as your profile picture</h1>
+  </div>
+  <ng-container *ngIf="!isAvatarsLoad; else avatarsList">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+  <ng-template #avatarsList>
+    <div class="avatars">
+      <ng-container *ngFor="let avatar of avatars; let i = index">
+        <div class="avatar" [ngClass]="{ selected: selectedAvatar == i }">
+          <img [src]="avatar" alt="avatar" (click)="setSelectedAvatar(i)" />
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+  <div class="d-flex">
+    <button class="refresh-btn" (click)="getProfileImages()">Refresh</button>
+    <button class="submit-btn">Set as Profile Picture</button>
+  </div>
+</div>

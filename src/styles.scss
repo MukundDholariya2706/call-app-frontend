@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -42,5 +41,23 @@ $call-app-frontend-theme-dark: mat.define-dark-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0 }
+
+body,
+button,
+input {
+  font-family: "Josefin Sans", sans-serif;
+}
+
+body {
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+}

@@ -1,4 +1,4 @@
-<section class="gradient-custom">
+<!-- <section class="gradient-custom">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -64,4 +64,18 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
+
+<div class="login-form-container">
+  <form class="login-form">
+    <div class="brand">
+      <img src="assets/chat_icon.svg" alt="logo" />
+    </div>
+    <input type="text" placeholder="email" />
+    <input type="text" placeholder="password" />
+    <button type="submit">Log in</button>
+    <span>
+        Don't have an accoount ? <a [routerLink]="['..','register']">Create one</a>
+    </span>
+  </form>
+</div>

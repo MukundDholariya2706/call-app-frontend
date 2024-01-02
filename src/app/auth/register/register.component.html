@@ -1,1 +1,20 @@
-<p>register works!</p>
+<div class="register-form-container">
+  <form class="register-form">
+    <div class="brand">
+      <img src="assets/chat_icon.svg" alt="logo" />
+      <h1>Chat</h1>
+    </div>
+    <input type="text" placeholder="username" name="username" />
+    <input type="email" placeholder="email" name="email" />
+    <input type="password" placeholder="password" name="password" />
+    <input
+      type="password"
+      placeholder="confirm password"
+      name="confirm password"
+    />
+    <button type="submit">Create User</button>
+    <span>
+      Already have an account ? <a [routerLink]="['..', 'login']">Login.</a>
+    </span>
+  </form>
+</div>
