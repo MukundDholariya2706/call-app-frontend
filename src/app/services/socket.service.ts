@@ -13,7 +13,9 @@ export class SocketService {
 
   startSocket() {
     if (!this.socket || (this.socket && !this.socket.connected)) {
-      this.socket = io(environment.socketUrl);
+      this.socket = io(environment.socketUrl, {
+        transports: ['websocket'],
+      });
     }
   }
 
