@@ -21,7 +21,7 @@ export class AuthService {
     for (let i = 0; i < 4; i++) {
       try {
         const api =
-          'https://api.multiavatar.com/4645646/' +
+          'https://api.multiavatar.com/4564567/' +
           Math.round(Math.random() * 1000);
 
         // Make HTTP request using HttpClient
@@ -53,5 +53,16 @@ export class AuthService {
 
   getAuthorizationToken() {
     return this.localstorageService.getLocalStore('auth_token');
+  }
+
+  checkLogin() {
+    if (!!this.localstorageService.getLocalStore('auth_token')) {
+      return true;
+    }
+    return false;
+  }
+
+  activeUserDetails() {
+    return this.localstorageService.getLocalStore('user');
   }
 }

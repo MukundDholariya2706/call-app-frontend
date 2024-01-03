@@ -6,8 +6,8 @@ import { AuthGuard } from './auth/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/register',
-    pathMatch: 'full'
+    redirectTo: '/home',
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -28,6 +28,12 @@ const routes: Routes = [
       import('./auth/set-avatar/set-avatar.module').then(
         (m) => m.SetAvatarModule
       ),
+  },
+  {
+    path: 'home',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./modules/home/home.module').then((m) => m.HomeModule),
   },
 ];
 

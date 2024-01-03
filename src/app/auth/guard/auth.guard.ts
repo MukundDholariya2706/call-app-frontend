@@ -1,15 +1,42 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  constructor(private router: Router, private authService: AuthService) {}
+
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    console.log('AuthGuard triggered for route:', state.url);
+    if (this.authService.checkLogin()) {
+      const user = this.authService.activeUserDetails();
+
+      if (user && user.profileImage) {
+        return true;
+      } else if (state.url !== '/set-avatar') {
+        // this.router.navigate(['/set-avatar']);
+        return this.router.createUrlTree(['/set-avatar']);
+      }
+
+      return true;
+    }
+    // this.router.navigate(['..', 'login']);
+    return this.router.createUrlTree(['..', 'login']);
   }
-  
 }

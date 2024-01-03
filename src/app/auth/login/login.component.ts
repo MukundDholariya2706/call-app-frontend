@@ -39,10 +39,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.loginUser(this.loginForm.value).subscribe((res: any) => {
       if (res.status) {
-        this.router.navigate(['..', 'set-avatar']);
-        
-        this.localstorageService.setLocalStore('auth_token', res.token);
+        this.localstorageService.setLocalStore('auth_token', res.data.token);
+        this.localstorageService.setLocalStore('user', res.data.user);
 
+        this.router.navigate(['..', 'home']);
         this._snackBar.open(res.message, 'close', {
           duration: 2000,
           horizontalPosition: 'center',
