@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
         Authorization: 'Bearer ' + authToken,
       };
 
-      console.log(request, 'request');
       if (request.url.includes('https://api.multiavatar.com')) {
         return next.handle(request);
       }

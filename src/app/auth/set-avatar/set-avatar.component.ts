@@ -23,12 +23,24 @@ export class SetAvatarComponent implements OnInit {
     this.isAvatarsLoad = true;
   }
 
-  refreshAvatar(){
+  refreshAvatar() {
     this.selectedAvatar = undefined;
     this.getProfileImages();
   }
 
   setSelectedAvatar(index: number) {
     this.selectedAvatar = index;
+  }
+
+  setAvatar() {
+    if (this.selectedAvatar != undefined) {
+      this.authService
+        .setProfileAvatar({
+          image: Object.values(this.avatars[this.selectedAvatar])[0],
+        })
+        .subscribe((res: any) => {
+          console.log(res, 'res');
+        });
+    }
   }
 }

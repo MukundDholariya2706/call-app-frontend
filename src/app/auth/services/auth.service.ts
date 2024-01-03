@@ -51,6 +51,11 @@ export class AuthService {
     return this.http.post(environment.apiUrl + '/user/login', payload);
   }
 
+  setProfileAvatar(payload: any) {
+    console.log(payload, 'payload');
+    return this.http.post(environment.apiUrl + '/user/setavatar', payload);
+  }
+  
   getAuthorizationToken() {
     return this.localstorageService.getLocalStore('auth_token');
   }

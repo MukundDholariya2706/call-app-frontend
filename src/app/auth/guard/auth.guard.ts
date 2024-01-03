@@ -27,16 +27,16 @@ export class AuthGuard implements CanActivate {
     if (this.authService.checkLogin()) {
       const user = this.authService.activeUserDetails();
 
-      if (user && user.profileImage) {
+      if (user && user?.isAvatarImageSet) {
         return true;
       } else if (state.url !== '/set-avatar') {
-        // this.router.navigate(['/set-avatar']);
-        return this.router.createUrlTree(['/set-avatar']);
+        return this.router.navigate(['/set-avatar']);
+        // return this.router.createUrlTree(['/set-avatar']);
       }
 
       return true;
     }
-    // this.router.navigate(['..', 'login']);
-    return this.router.createUrlTree(['..', 'login']);
+    return this.router.navigate(['..', 'login']);
+    // return this.router.createUrlTree(['..', 'login']);
   }
 }
