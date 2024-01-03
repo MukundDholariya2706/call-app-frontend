@@ -38,9 +38,7 @@ export class SetAvatarComponent implements OnInit {
         .setProfileAvatar({
           image: Object.values(this.avatars[this.selectedAvatar])[0],
         })
-        .subscribe((res: any) => {
-          console.log(res, 'res');
-        });
+        .subscribe();
     }
   }
 }

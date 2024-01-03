@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Response } from 'src/app/interface/response';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { Response } from 'src/app/interface/response';
 export class AuthService {
   constructor(
     private http: HttpClient,
+    private router: Router,
     private sanitizer: DomSanitizer,
     private localstorageService: LocalstorageService
   ) {}
@@ -51,11 +53,17 @@ export class AuthService {
     return this.http.post(environment.apiUrl + '/user/login', payload);
   }
 
-  setProfileAvatar(payload: any) {
-    console.log(payload, 'payload');
-    return this.http.post(environment.apiUrl + '/user/setavatar', payload);
+  setProfileAvatar(payload: { image: string }) {
+    return this.http.post(environment.apiUrl + '/user/setavatar', payload).pipe(
+      tap((res: any) => {
+        if (res.status) {
+          this.localstorageService.setLocalStore('user', res.data);
+          this.router.navigate(['/home']);
+        }
+      })
+    );
   }
-  
+
   getAuthorizationToken() {
     return this.localstorageService.getLocalStore('auth_token');
   }

@@ -24,19 +24,31 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     console.log('AuthGuard triggered for route:', state.url);
-    if (this.authService.checkLogin()) {
+    // Condition 1: If checkLogin is undefined, go to the login page
+    const isUserLoggedIn = this.authService.checkLogin();
+    if (isUserLoggedIn === undefined) {
+      return this.router.createUrlTree(['..', 'login']);
+    }
+
+    // Condition 2: If checkLogin is true, check user data
+    if (isUserLoggedIn) {
       const user = this.authService.activeUserDetails();
 
-      if (user && user?.isAvatarImageSet) {
-        return true;
-      } else if (state.url !== '/set-avatar') {
-        return this.router.navigate(['/set-avatar']);
-        // return this.router.createUrlTree(['/set-avatar']);
+      // Subcondition a: If user isAvatarImageSet is false, redirect to set-avatar page (if not already on /set-avatar)
+      if (user && !user.isAvatarImageSet && state.url !== '/set-avatar') {
+        return this.router.createUrlTree(['/set-avatar']);
       }
 
+      // Subcondition b: If user isAvatarImageSet is true, redirect to home page (if on set-avatar page)
+      if (user && user.isAvatarImageSet && state.url === '/set-avatar') {
+        return this.router.createUrlTree(['/home']);
+      }
+
+      // Default: User is logged in, but no specific condition matched, continue with the route
       return true;
     }
-    return this.router.navigate(['..', 'login']);
-    // return this.router.createUrlTree(['..', 'login']);
+
+    // Default: User is not logged in, redirect to login page
+    return this.router.createUrlTree(['..', 'login']);
   }
 }
