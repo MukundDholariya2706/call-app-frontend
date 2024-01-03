@@ -1,13 +1,20 @@
+import { LocalstorageService } from './../../services/localstorage.service';
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { Response } from 'src/app/interface/response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private localstorageService: LocalstorageService
+  ) {}
 
   async getAvatarImages(): Promise<SafeResourceUrl[]> {
     const data: SafeResourceUrl[] = [];
@@ -33,5 +40,18 @@ export class AuthService {
     return data;
   }
 
-  
+  registerUser(payload: any): Observable<Response> {
+    return this.http.post<Response>(
+      environment.apiUrl + '/user/register',
+      payload
+    );
+  }
+
+  loginUser(payload: any): Observable<any> {
+    return this.http.post(environment.apiUrl + '/user/login', payload);
+  }
+
+  getAuthorizationToken() {
+    return this.localstorageService.getLocalStore('auth_token');
+  }
 }

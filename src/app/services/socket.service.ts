@@ -12,6 +12,7 @@ export class SocketService {
   constructor() {}
 
   startSocket() {
+    console.log(environment.socketUrl, 'environment.socketUrl')
     if (!this.socket || (this.socket && !this.socket.connected)) {
       this.socket = io(environment.socketUrl, {
         transports: ['websocket'],

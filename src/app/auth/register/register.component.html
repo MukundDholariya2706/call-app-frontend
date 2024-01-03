@@ -1,18 +1,19 @@
 <div class="register-form-container">
-  <form class="register-form">
+  <form class="register-form" [formGroup]="registerForm">
     <div class="brand">
       <img src="assets/chat_icon.svg" alt="logo" />
       <h1>Chat</h1>
     </div>
-    <input type="text" placeholder="Username" name="username" />
-    <input type="email" placeholder="Email" name="email" />
-    <input type="password" placeholder="Password" name="password" />
+    <input type="text" placeholder="Username" name="username" formControlName="username" />
+    <input type="email" placeholder="Email" name="email" formControlName="email" />
+    <input type="password" placeholder="Password" name="password" formControlName="password" />
     <input
       type="password"
       placeholder="Confirm Password"
       name="confirm password"
+      formControlName="confirm_password"
     />
-    <button type="submit">Create User</button>
+    <button type="submit" (click)="onSubmit()">Create User</button>
     <span>
       Already have an account ? <a [routerLink]="['..', 'login']">Login.</a>
     </span>

@@ -7,15 +7,22 @@
   </ng-container>
   <ng-template #avatarsList>
     <div class="avatars">
-      <ng-container *ngFor="let avatar of avatars; let i = index">
-        <div class="avatar" [ngClass]="{ selected: selectedAvatar == i }">
-          <img [src]="avatar" alt="avatar" (click)="setSelectedAvatar(i)" />
-        </div>
+      <ng-container *ngIf="avatars.length != 0; else noAvatarFound">
+        <ng-container *ngFor="let avatar of avatars; let i = index">
+          <div class="avatar" [ngClass]="{ selected: selectedAvatar == i }">
+            <img [src]="avatar" alt="avatar" (click)="setSelectedAvatar(i)" />
+          </div>
+        </ng-container>
       </ng-container>
+      <ng-template #noAvatarFound>
+        <div class="title-container">
+          <h1>Click on refresh button</h1>
+        </div>
+      </ng-template>
     </div>
   </ng-template>
   <div class="d-flex">
-    <button class="refresh-btn" (click)="getProfileImages()">Refresh</button>
+    <button class="refresh-btn" (click)="refreshAvatar()">Refresh</button>
     <button class="submit-btn">Set as Profile Picture</button>
   </div>
 </div>

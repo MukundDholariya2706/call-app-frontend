@@ -23,6 +23,11 @@ export class SetAvatarComponent implements OnInit {
     this.isAvatarsLoad = true;
   }
 
+  refreshAvatar(){
+    this.selectedAvatar = undefined;
+    this.getProfileImages();
+  }
+
   setSelectedAvatar(index: number) {
     this.selectedAvatar = index;
   }
