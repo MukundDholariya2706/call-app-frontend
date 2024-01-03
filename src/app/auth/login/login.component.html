@@ -71,11 +71,12 @@
     <div class="brand">
       <img src="assets/chat_icon.svg" alt="logo" />
     </div>
-    <input type="text" placeholder="email" />
-    <input type="text" placeholder="password" />
+    <input type="text" placeholder="Email" name="email" />
+    <input type="text" placeholder="Password" name="password" />
     <button type="submit">Log in</button>
     <span>
-        Don't have an accoount ? <a [routerLink]="['..','register']">Create one</a>
+      Don't have an accoount ?
+      <a [routerLink]="['..', 'register']">Create one</a>
     </span>
   </form>
 </div>
