@@ -28,6 +28,6 @@ export class UnauthGuard implements CanActivate {
     }
 
     // Redirect to home if logged in
-    return this.router.createUrlTree(['/home']);
+    return this.router.createUrlTree(['/']);
   }
 }

@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
 
       // Subcondition b: If user isAvatarImageSet is true, redirect to home page (if on set-avatar page)
       if (user && user.isAvatarImageSet && state.url === '/set-avatar') {
-        return this.router.createUrlTree(['/home']);
+        return this.router.createUrlTree(['/']);
       }
 
       // Default: User is logged in, but no specific condition matched, continue with the route

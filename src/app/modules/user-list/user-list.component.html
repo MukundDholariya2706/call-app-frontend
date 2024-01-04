@@ -1,0 +1,15 @@
+<div class="main-container">
+  <div class="brand">
+    <img src="assets/chat_icon.svg" alt="logo" />
+    <h3 class="m-0">Chat's</h3>
+  </div>
+  <div class="contacts"></div>
+  <div class="current-user">
+    <div class="avatar">
+      <img [src]="sanitizer.bypassSecurityTrustResourceUrl(activeUser.profileImage)" alt="avatar" />
+    </div>
+    <div class="username">
+      <h2 class="m-0">{{ activeUser.username }}</h2>
+    </div>
+  </div>
+</div>
