@@ -1,6 +1,15 @@
 <div class="main-container">
   <div class="child-container">
-    <app-user-list [contacts]="[]" [activeUser]="activeUser"></app-user-list>
-    <app-welcome [user]="activeUser"></app-welcome>
+    <app-user-list
+      [contacts]="contacts"
+      [activeUser]="activeUser"
+      (changeChat)="handleChatChange($event)"
+    ></app-user-list>
+    <ng-container *ngIf="currentChatUser === undefined; else chatwindow">
+      <app-welcome [user]="activeUser"></app-welcome>
+    </ng-container>
+    <ng-template #chatwindow>
+      <app-chat-window [currentChatUser]="currentChatUser"></app-chat-window>
+    </ng-template>
   </div>
 </div>

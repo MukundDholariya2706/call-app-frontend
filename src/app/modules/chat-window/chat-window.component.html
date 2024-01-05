@@ -1,0 +1,58 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <div class="user-details">
+      <div class="avatar">
+        <img
+          [src]="
+            sanitizer.bypassSecurityTrustResourceUrl(
+              currentChatUser.profileImage
+            )
+          "
+          alt="profileAvatar"
+        />
+      </div>
+      <div class="username">
+        <h3 class="m-0">{{ currentChatUser.username }}</h3>
+      </div>
+    </div>
+    <!-- <button>Logout</button> -->
+  </div>
+  <div class="chat-messages">
+    <!-- loop -->
+    <ng-container *ngIf="messages.length != 0">
+      <ng-container *ngFor="let message of messages">
+        <div>
+          <div
+            class="message"
+            [ngClass]="
+              message?.fromUser == activeUser?._id ? 'sended' : 'recieved'
+            "
+          >
+            <div class="content">
+              <p class="m-0">{{ message?.message }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <!-- input -->
+  <div class="message-input-container">
+    <div class="button-container"></div>
+    <form class="input-container">
+      <input
+        (input)="getInput()"
+        autofocus
+        id="focus"
+        type="text"
+        [(ngModel)]="newMessage"
+        name="newMessage"
+        placeholder="type your message here"
+      />
+      <button [disabled]="!isButtonvalue" (click)="sendMessage()" type="submit">
+        send
+      </button>
+    </form>
+  </div>
+</div>

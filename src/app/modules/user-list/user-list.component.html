@@ -3,10 +3,34 @@
     <img src="assets/chat_icon.svg" alt="logo" />
     <h3 class="m-0">Chat's</h3>
   </div>
-  <div class="contacts"></div>
+  <div class="contacts">
+    <ng-container *ngFor="let contact of contacts; let i = index">
+      <div
+        (click)="changeCurrentChat(i, contact)"
+        class="contact"
+        [ngClass]="{ selected: i == selectedUser }"
+      >
+        <div class="avatar">
+          <img
+            [src]="
+              sanitizer.bypassSecurityTrustResourceUrl(contact.profileImage)
+            "
+          />
+        </div>
+        <div class="username">
+          <h3 class="m-0">{{ contact.username }}</h3>
+        </div>
+      </div>
+    </ng-container>
+  </div>
   <div class="current-user">
     <div class="avatar">
-      <img [src]="sanitizer.bypassSecurityTrustResourceUrl(activeUser.profileImage)" alt="avatar" />
+      <img
+        [src]="
+          sanitizer.bypassSecurityTrustResourceUrl(activeUser.profileImage)
+        "
+        alt="avatar"
+      />
     </div>
     <div class="username">
       <h2 class="m-0">{{ activeUser.username }}</h2>

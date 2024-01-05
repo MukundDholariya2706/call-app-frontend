@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
         this.localstorageService.setLocalStore('auth_token', res.data.token);
         this.localstorageService.setLocalStore('user', res.data.user);
 
-        this.router.navigate(['..', 'home']);
+        this.router.navigate(['..']);
         this._snackBar.open(res.message, 'close', {
           duration: 2000,
           horizontalPosition: 'center',

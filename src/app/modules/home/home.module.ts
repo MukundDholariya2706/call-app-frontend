@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { UserListModule } from '../user-list/user-list.module';
 import { WelcomeModule } from '../welcome/welcome.module';
+import { ChatWindowModule } from '../chat-window/chat-window.module';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
     CommonModule,
     WelcomeModule,
     UserListModule,
+    ChatWindowModule,
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],

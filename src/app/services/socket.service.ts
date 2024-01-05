@@ -14,13 +14,11 @@ export class SocketService {
   constructor(private authService: AuthService) {}
 
   startSocket() {
-    console.log(environment.socketUrl, 'environment.socketUrl');
+    
     this.user = this.authService.activeUserDetails();
 
     if (!this.socket || (this.socket && !this.socket.connected)) {
-      this.socket = io(environment.socketUrl, {
-        transports: ['websocket'],
-      });
+      this.socket = io(environment.socketUrl);
       this.socket.emit('room', {
         id: this.user._id,
       });

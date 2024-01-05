@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -9,13 +9,16 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class UserListComponent implements OnInit {
   @Input() contacts: any[] = [];
   @Input() activeUser: any;
+  @Output() changeChat: any = new EventEmitter();
 
-  constructor(
-    public sanitizer: DomSanitizer,
-  ) {}
+  selectedUser: number | undefined = undefined;
 
-  ngOnInit(): void {
+  constructor(public sanitizer: DomSanitizer) {}
 
+  ngOnInit(): void {}
+
+  changeCurrentChat(index: number, contact: any) {
+    this.selectedUser = index;
+    this.changeChat.emit(contact);
   }
-
 }
