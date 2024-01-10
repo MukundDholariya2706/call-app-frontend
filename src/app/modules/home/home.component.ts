@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   public activeUser: any;
   public contacts: any[] = [];
   public currentChatUser: any;
+  public showCallScreen: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -26,7 +27,18 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  handleChatChange(event: any){
+  handleChatChange(event: any) {
     this.currentChatUser = event;
+    this.showCallScreen = false;
+  }
+
+  videoCallInit(event: any) {
+    this.showCallScreen = true;
+  }
+
+  callEnded(event: any) {
+    if(event){
+      this.showCallScreen = false;
+    }
   }
 }

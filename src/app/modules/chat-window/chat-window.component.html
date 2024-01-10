@@ -13,9 +13,20 @@
       </div>
       <div class="username">
         <h3 class="m-0">{{ currentChatUser.username }}</h3>
+        <span
+          class="online-indicator"
+          [ngClass]="{
+            online: currentChatUser?.isOnline === true,
+            offline: currentChatUser?.isOnline === false
+          }"
+        ></span>
       </div>
     </div>
-    <!-- <button>Logout</button> -->
+    <div class="d-flex justify-content-center align-items-center">
+      <span id="video-chat-lobby" class="btn text-white" (click)="startVideoCall(currentChatUser)">
+        <i class="bi bi-camera-video"></i>
+      </span>
+    </div>
   </div>
   <div class="chat-messages">
     <!-- loop -->
@@ -24,9 +35,10 @@
         <div>
           <div
             class="message"
-            [ngClass]="
-              message?.fromUser == activeUser?._id ? 'sended' : 'recieved'
-            "
+            [ngClass]="{
+              sended: message?.fromUser == activeUser?._id,
+              recieved: message?.fromUser !== activeUser?._id
+            }"
           >
             <div class="content">
               <p class="m-0">{{ message?.message }}</p>
@@ -42,7 +54,6 @@
     <div class="button-container"></div>
     <form class="input-container">
       <input
-        (input)="getInput()"
         autofocus
         id="focus"
         type="text"
@@ -50,9 +61,7 @@
         name="newMessage"
         placeholder="type your message here"
       />
-      <button [disabled]="!isButtonvalue" (click)="sendMessage()" type="submit">
-        send
-      </button>
+      <button (click)="sendMessage()" type="submit">send</button>
     </form>
   </div>
 </div>

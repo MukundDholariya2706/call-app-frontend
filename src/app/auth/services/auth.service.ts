@@ -64,6 +64,15 @@ export class AuthService {
     );
   }
 
+  logoutUser(payload: any = {}): any {
+    return this.http.post(environment.apiUrl + '/user/logout', payload).pipe(tap((res: any) => {
+      if(res.status){
+        this.localstorageService.clearStorage();
+        this.router.navigate(['/login']);
+      }
+    }));
+  }
+
   getAuthorizationToken() {
     return this.localstorageService.getLocalStore('auth_token');
   }
@@ -78,4 +87,6 @@ export class AuthService {
   activeUserDetails() {
     return this.localstorageService.getLocalStore('user');
   }
+
+  
 }

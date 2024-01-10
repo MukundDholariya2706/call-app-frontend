@@ -1,0 +1,10 @@
+.hang-up {
+  transform: rotate(135deg);
+  font-size: x-large;
+}
+
+.video-main-container{
+  height: 100%;
+  display: grid;
+  grid-template-rows: 10% 80% 10%;
+}

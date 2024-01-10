@@ -1,0 +1,14 @@
+<div class="video-main-container">
+  <div>Top</div>
+  <div id="video-chat-room">
+    <video id="user-video" #userVideoRef></video>
+    <video id="peer-video"></video>
+  </div>
+  <div class="call-actions d-flex justify-content-center align-items-center">
+    <div class="border border-danger rounded-circle p-2 bg-danger" (click)="hangUpCall()">
+      <div class="hang-up">
+        <i class="bi bi-telephone text-white"></i>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { ChatService } from '../services/chat.service';
@@ -9,12 +9,12 @@ import { ChatService } from '../services/chat.service';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss'],
 })
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent implements OnInit, AfterViewInit {
   @Input() currentChatUser: any;
+  @Output() videoCallInit = new EventEmitter();
   activeUser: any;
   messages: any[] = [];
-  newMessage: any;
-  isButtonvalue: boolean = false;
+  newMessage: string = '';
 
   constructor(
     public sanitizer: DomSanitizer,
@@ -29,14 +29,6 @@ export class ChatWindowComponent implements OnInit {
     this.getChatHistory();
   }
 
-  getInput(): void {
-    if (this.newMessage.trim()) {
-      this.isButtonvalue = true;
-    } else {
-      this.isButtonvalue = false;
-    }
-  }
-
   sendMessage() {
     const messageObj = {
       fromUser: this.activeUser?._id,
@@ -44,10 +36,13 @@ export class ChatWindowComponent implements OnInit {
       message: this.newMessage,
     };
 
+    if (this.newMessage?.trim() == '') {
+      return;
+    }
+
     this.messages.push(messageObj);
     this.socketService.emit('sendMessage', messageObj);
     this.newMessage = '';
-    this.isButtonvalue = false;
     const value = document.getElementById('focus');
     value?.focus();
   }
@@ -68,5 +63,21 @@ export class ChatWindowComponent implements OnInit {
           this.messages = [];
         }
       });
+  }
+
+  startVideoCall(currentChatUser: any) {
+    this.videoCallInit.emit(currentChatUser);
+  }
+
+  ngAfterViewInit(): void {
+    this.socketListenEvent();
+  }
+
+  // listen event for call
+  socketListenEvent() {
+    this.socketService.listen('ready').subscribe();
+    this.socketService.listen('cadidate').subscribe();
+    this.socketService.listen('offer').subscribe();
+    this.socketService.listen('answer').subscribe();
   }
 }

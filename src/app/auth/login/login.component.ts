@@ -40,10 +40,10 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.loginForm.value).subscribe((res: any) => {
       if (res.status) {
         this.localstorageService.setLocalStore('auth_token', res.data.token);
-        this.localstorageService.setLocalStore('user', res.data.user);
+        this.localstorageService.setLocalStore('user', res.data.userData);
 
         this.router.navigate(['..']);
-        this._snackBar.open(res.message, 'close', {
+        this._snackBar.open(res.message, 'Close', {
           duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom',

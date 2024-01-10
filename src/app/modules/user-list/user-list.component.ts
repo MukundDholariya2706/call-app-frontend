@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -13,12 +14,19 @@ export class UserListComponent implements OnInit {
 
   selectedUser: number | undefined = undefined;
 
-  constructor(public sanitizer: DomSanitizer) {}
+  constructor(
+    public sanitizer: DomSanitizer,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {}
 
   changeCurrentChat(index: number, contact: any) {
     this.selectedUser = index;
     this.changeChat.emit(contact);
+  }
+
+  logout() {
+    this.authService.logoutUser().subscribe();
   }
 }

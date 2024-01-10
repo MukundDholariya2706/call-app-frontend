@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser(payload).subscribe((res) => {
       if (res.status) {
         this.router.navigate(['..', 'login']);
-        this._snackBar.open(res.message, 'close', {
+        this._snackBar.open(res.message, 'Close', {
           duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom',

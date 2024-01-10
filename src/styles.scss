@@ -1,6 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -12,27 +12,36 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $call-app-frontend-primary: mat.define-palette(mat.$indigo-palette);
-$call-app-frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$call-app-frontend-accent: mat.define-palette(
+  mat.$pink-palette,
+  A200,
+  A100,
+  A400
+);
 
 // The warn palette is optional (defaults to red).
 $call-app-frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$call-app-frontend-theme: mat.define-light-theme((
-  color: (
-    primary: $call-app-frontend-primary,
-    accent: $call-app-frontend-accent,
-    warn: $call-app-frontend-warn,
+$call-app-frontend-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $call-app-frontend-primary,
+      accent: $call-app-frontend-accent,
+      warn: $call-app-frontend-warn,
+    ),
   )
-));
-$call-app-frontend-theme-dark: mat.define-dark-theme((
-  color: (
-    primary: $call-app-frontend-primary,
-    accent: $call-app-frontend-accent,
-    warn: $call-app-frontend-warn,
+);
+$call-app-frontend-theme-dark: mat.define-dark-theme(
+  (
+    color: (
+      primary: $call-app-frontend-primary,
+      accent: $call-app-frontend-accent,
+      warn: $call-app-frontend-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -47,8 +56,13 @@ $call-app-frontend-theme-dark: mat.define-dark-theme((
   box-sizing: border-box;
 }
 
-html, body { height: 100%; }
-body { margin: 0 }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
 
 body,
 button,
@@ -62,7 +76,24 @@ body {
   overflow: hidden;
 }
 
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #090909 inset !important;
   -webkit-text-fill-color: white !important;
+}
+
+.online-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 5px;
+
+  &.online {
+    background-color: #4caf50; /* Green color for online */
+  }
+
+  &.offline {
+    background-color: #c0c0c0; /* Green color for online */
+  }
 }

@@ -20,6 +20,13 @@
         <div class="username">
           <h3 class="m-0">{{ contact.username }}</h3>
         </div>
+        <span
+          class="online-indicator"
+          [ngClass]="{
+            online: contact?.isOnline === true,
+            offline: contact?.isOnline === false
+          }"
+        ></span>
       </div>
     </ng-container>
   </div>
@@ -35,5 +42,8 @@
     <div class="username">
       <h2 class="m-0">{{ activeUser.username }}</h2>
     </div>
+    <span class="btn text-white cursor-pointer" (click)="logout()">
+      <i class="bi bi-power"></i>
+    </span>
   </div>
 </div>
