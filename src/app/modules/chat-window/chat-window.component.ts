@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { ChatService } from '../services/chat.service';
@@ -9,7 +9,7 @@ import { ChatService } from '../services/chat.service';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss'],
 })
-export class ChatWindowComponent implements OnInit, AfterViewInit {
+export class ChatWindowComponent implements OnInit {
   @Input() currentChatUser: any;
   @Output() videoCallInit = new EventEmitter();
   activeUser: any;
@@ -69,15 +69,5 @@ export class ChatWindowComponent implements OnInit, AfterViewInit {
     this.videoCallInit.emit(currentChatUser);
   }
 
-  ngAfterViewInit(): void {
-    this.socketListenEvent();
-  }
 
-  // listen event for call
-  socketListenEvent() {
-    this.socketService.listen('ready').subscribe();
-    this.socketService.listen('cadidate').subscribe();
-    this.socketService.listen('offer').subscribe();
-    this.socketService.listen('answer').subscribe();
-  }
 }

@@ -14,7 +14,7 @@
       </ng-container>
 
       <ng-template #callScreen>
-        <app-video (callEnded)="callEnded($event)"></app-video>
+        <app-video [isCaller]="isCaller" [activeUser]="activeUser" [currentChatUser]="currentChatUser" (callEnded)="callEnded($event)"></app-video>
       </ng-template>
       
     </ng-template>

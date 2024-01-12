@@ -1,14 +1,26 @@
-<div class="video-main-container">
-  <div>Top</div>
-  <div id="video-chat-room">
-    <video id="user-video" #userVideoRef></video>
-    <video id="peer-video"></video>
+<ng-container *ngIf="getUserMediaNotSupport; else videoCallWindow">
+  <div class="d-flex h-100 justify-content-center align-items-center ">
+    <h3 class="text-white">Your browser is not supported video and audio</h3>
   </div>
-  <div class="call-actions d-flex justify-content-center align-items-center">
-    <div class="border border-danger rounded-circle p-2 bg-danger" (click)="hangUpCall()">
-      <div class="hang-up">
-        <i class="bi bi-telephone text-white"></i>
+</ng-container>
+
+<ng-template #videoCallWindow>
+  <div class="video-main-container">
+    <div class="text-white">
+    </div>
+    <div id="video-chat-room">
+      <video id="user-video" #userVideoRef></video>
+      <video id="peer-video" #peerVideoRef></video>
+    </div>
+    <div class="call-actions d-flex justify-content-center align-items-center">
+      <div
+        class="border border-danger rounded-circle p-2 bg-danger"
+        (click)="hangUpCall()"
+      >
+        <div class="hang-up">
+          <i class="bi bi-telephone text-white"></i>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>

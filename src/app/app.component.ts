@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SocketService } from './services/socket.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,8 +9,7 @@ import { environment } from 'src/environments/environment';
 export class AppComponent {
   title = 'call-app-frontend';
 
-  constructor(private socketService: SocketService) {
-    this.socketService.startSocket();
-    console.log(environment.apiUrl, 'apiUrl')
+  constructor() {
+    console.log(environment.apiUrl, 'apiUrl');
   }
 }

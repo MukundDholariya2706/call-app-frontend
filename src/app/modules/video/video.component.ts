@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -17,22 +18,42 @@ import {
 })
 export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('userVideoRef') userVideo!: ElementRef<any>;
+  @ViewChild('peerVideoRef') peerVideo!: ElementRef<any>;
+
+  @Input() activeUser: any;
+  @Input() currentChatUser!: any;
+  @Input() isCaller!: boolean;
   @Output() callEnded = new EventEmitter<boolean>();
-  private videoStream!: MediaStream;
+
+  public videoStream!: MediaStream;
+  public getUserMediaNotSupport: boolean = false;
+  public showVideo: boolean = true;
 
   constructor(private socketService: SocketService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    // if(this.isCaller){
     this.getUserMedia();
+    // }
   }
 
-  getUserMedia() {
+  // get peer video and audio
+  getPeerMedia(stream: any) {
+    const peerVideoElemet: HTMLVideoElement = this.peerVideo.nativeElement;
+    peerVideoElemet.srcObject = stream;
+    peerVideoElemet.play();
+  }
+
+  // get user video and audio access from browser
+  getUserMedia(): void {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ audio: true, video: { width: 100, height: 100 } })
-        // .getUserMedia({ audio: true, video: false })
+        .getUserMedia({
+          audio: true,
+          video: this.showVideo ? { width: 100, height: 100 } : false,
+        })
         .then((stream: MediaStream) => {
           const userVideoElemet: HTMLVideoElement =
             this.userVideo.nativeElement;
@@ -43,6 +64,12 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           // Play the video
           userVideoElemet.play();
 
+          // trigger event to send user is ready
+          this.socketService.emit('ready', {
+            reciverUser: this.currentChatUser?._id,
+            callerUser: this.activeUser._id,
+          });
+
           // Save the stream reference for later use
           this.videoStream = stream;
         })
@@ -50,6 +77,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('Error accessing webcam:', error);
         });
     } else {
+      this.getUserMediaNotSupport = true;
       console.error('getUserMedia is not supported in this browser');
     }
   }
