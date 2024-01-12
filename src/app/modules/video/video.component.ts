@@ -140,7 +140,16 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       fromUser: this.callerDetails,
       toUser: this.receiverDetails,
     });
+
+    this.cancelVideoStream();
     this.dialogRef.close();
+  }
+
+  cancelVideoStream(){
+    if(this.videoStream){
+      this.videoStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      (this.userVideo.nativeElement as HTMLVideoElement).srcObject = null;
+    }
   }
 
   // receiver cut the call
@@ -150,6 +159,8 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       fromUser: this.receiverDetails,
       toUser: this.callerDetails,
     });
+
+    this.cancelVideoStream();
     this.dialogRef.close();
   }
 
