@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatWindowComponent } from './chat-window.component';
 import { FormsModule } from '@angular/forms';
+import { VideoModule } from '../video/video.module';
 
 
 
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    VideoModule
   ],
   exports: [
     ChatWindowComponent

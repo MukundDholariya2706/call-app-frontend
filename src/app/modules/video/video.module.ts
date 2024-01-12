@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VideoComponent } from './video.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -9,7 +10,8 @@ import { VideoComponent } from './video.component';
     VideoComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ],
   exports: [
     VideoComponent

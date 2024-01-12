@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-center align-items-center">
-      <span id="video-chat-lobby" class="btn text-white" (click)="startVideoCall(currentChatUser)">
+      <span id="video-chat-lobby" class="btn text-white" (click)="startVideoCall(currentChatUser, loginUser)">
         <i class="bi bi-camera-video"></i>
       </span>
     </div>
@@ -36,8 +36,8 @@
           <div
             class="message"
             [ngClass]="{
-              sended: message?.fromUser == activeUser?._id,
-              recieved: message?.fromUser !== activeUser?._id
+              sended: message?.fromUser == loginUser?._id,
+              recieved: message?.fromUser !== loginUser?._id
             }"
           >
             <div class="content">

@@ -6,12 +6,13 @@ import { UserListModule } from '../user-list/user-list.module';
 import { WelcomeModule } from '../welcome/welcome.module';
 import { ChatWindowModule } from '../chat-window/chat-window.module';
 import { VideoModule } from '../video/video.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-  }
+  },
 ];
 
 @NgModule({
@@ -23,6 +24,7 @@ const routes: Routes = [
     ChatWindowModule,
     VideoModule,
     RouterModule.forChild(routes),
+    MatDialogModule,
   ],
   exports: [RouterModule],
 })

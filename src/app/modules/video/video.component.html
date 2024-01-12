@@ -1,26 +1,115 @@
-<ng-container *ngIf="getUserMediaNotSupport; else videoCallWindow">
-  <div class="d-flex h-100 justify-content-center align-items-center ">
+<!-- <ng-container *ngIf="getUserMediaNotSupport; else videoCallWindow">
+  <div class="d-flex h-100 justify-content-center align-items-center">
     <h3 class="text-white">Your browser is not supported video and audio</h3>
   </div>
 </ng-container>
 
 <ng-template #videoCallWindow>
   <div class="video-main-container">
-    <div class="text-white">
-    </div>
+    <div class="text-white"></div>
     <div id="video-chat-room">
       <video id="user-video" #userVideoRef></video>
       <video id="peer-video" #peerVideoRef></video>
     </div>
     <div class="call-actions d-flex justify-content-center align-items-center">
-      <div
-        class="border border-danger rounded-circle p-2 bg-danger"
-        (click)="hangUpCall()"
-      >
+      <div class="border border-danger rounded-circle p-2 bg-danger">
         <div class="hang-up">
           <i class="bi bi-telephone text-white"></i>
         </div>
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
+
+<div class="video-main-container">
+  <div></div>
+  <div class="d-flex align-items-center justify-content-center">
+    <!-- before call pickup window -->
+    <ng-container *ngIf="!isReceiverPickupCalled">
+      <!-- receiver window -->
+      <ng-container *ngIf="isReceiver">
+        <div>
+          <div class="avatar">
+            <img
+              [src]="
+                sanitizer.bypassSecurityTrustResourceUrl(
+                  callerDetails?.profileImage
+                )
+              "
+              alt=""
+            />
+          </div>
+          <div class="d-flex justify-content-center mt-1 h4">
+            <span>{{ callerDetails?.username }}</span>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- caller window -->
+      <ng-container *ngIf="isCaller">
+        <div>
+          <div class="avatar">
+            <img
+              [src]="
+                sanitizer.bypassSecurityTrustResourceUrl(
+                  receiverDetails?.profileImage
+                )
+              "
+              alt=""
+            />
+          </div>
+          <div class="d-flex justify-content-center mt-1 h4">
+            <span>{{ receiverDetails?.username }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- after call pickup window -->
+    <ng-container *ngIf="isReceiverPickupCalled">
+      <div class="d-flex justify-content-center align-items-center">
+        <div>
+          1<video class="w-50 h-50" #userVideoRef></video>
+        </div>
+        <div>
+          2<video class="w-50 h-50" #peerVideoRef></video>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="call-actions d-flex justify-content-evenly align-items-center">
+    <!-- receiver action buttons -->
+    <ng-container *ngIf="isReceiver">
+      <div
+        *ngIf="!isReceiverPickupCalled"
+        class="border border-success rounded-circle p-2 bg-success"
+        (click)="receiverPickupCall()"
+      >
+        <div class="answer-call">
+          <i class="bi bi-telephone text-white"></i>
+        </div>
+      </div>
+      <div
+        class="border border-danger rounded-circle p-2 bg-danger"
+        (click)="receiverCutCall()"
+      >
+        <div class="hang-up">
+          <i class="bi bi-telephone text-white"></i>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- caller action buttons -->
+    <ng-container *ngIf="isCaller">
+      <div
+        class="border border-danger rounded-circle p-2 bg-danger"
+        (click)="callerCutCall()"
+      >
+        <div class="hang-up">
+          <i class="bi bi-telephone text-white"></i>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -3,8 +3,18 @@
   font-size: x-large;
 }
 
-.video-main-container{
+.answer-call {
+  font-size: x-large;
+}
+
+.video-main-container {
   height: 100%;
   display: grid;
   grid-template-rows: 10% 80% 10%;
+}
+
+.avatar {
+  img {
+    height: 8rem;
+  }
 }

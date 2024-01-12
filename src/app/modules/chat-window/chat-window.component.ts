@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { ChatService } from '../services/chat.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { VideoComponent } from '../video/video.component';
 
 @Component({
   selector: 'app-chat-window',
@@ -12,7 +14,10 @@ import { ChatService } from '../services/chat.service';
 export class ChatWindowComponent implements OnInit {
   @Input() currentChatUser: any;
   @Output() videoCallInit = new EventEmitter();
-  activeUser: any;
+
+  public dialogRef!: MatDialogRef<VideoComponent>;
+
+  loginUser: any;
   messages: any[] = [];
   newMessage: string = '';
 
@@ -20,18 +25,19 @@ export class ChatWindowComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private socketService: SocketService,
     private authService: AuthService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.activeUser = this.authService.activeUserDetails();
+    this.loginUser = this.authService.activeUserDetails();
     this.receivedMessage();
     this.getChatHistory();
   }
 
   sendMessage() {
     const messageObj = {
-      fromUser: this.activeUser?._id,
+      fromUser: this.loginUser?._id,
       toUser: this.currentChatUser?._id,
       message: this.newMessage,
     };
@@ -65,9 +71,37 @@ export class ChatWindowComponent implements OnInit {
       });
   }
 
-  startVideoCall(currentChatUser: any) {
-    this.videoCallInit.emit(currentChatUser);
+  startVideoCall(currentChatUser: any, loginUser: any) {
+    this.dialogRef = this.dialog.open(VideoComponent, {
+      width: '500px',
+      height: '300px',
+      disableClose: true,
+      data: {
+        isCaller: true,
+        callerDetails: { ...loginUser },
+        isReceiver: false,
+        receiverDetails: { ...currentChatUser },
+      },
+    });
+
+    this.socketService.emit('callInit', {
+      fromUser: { ...loginUser },
+      toUser: { ...currentChatUser },
+    });
+
+    this.callendFromReciver();
+
+    this.dialogRef.afterClosed().subscribe((result) => {
+      console.log(result, '');
+    });
   }
 
-
+  // call end/cancel from reciver
+  callendFromReciver(){
+    this.socketService.listen('callendFromReceiverEmit').subscribe((data: any) => {
+      if(data.callend){
+        this.dialogRef.close();
+      }
+    })
+  }
 }

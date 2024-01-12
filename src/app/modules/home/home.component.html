@@ -9,14 +9,7 @@
       <app-welcome [user]="activeUser"></app-welcome>
     </ng-container>
     <ng-template #chatwindow>
-      <ng-container *ngIf="!showCallScreen; else callScreen">
-        <app-chat-window [currentChatUser]="currentChatUser" (videoCallInit)="videoCallInit($event)"></app-chat-window>
-      </ng-container>
-
-      <ng-template #callScreen>
-        <app-video [isCaller]="isCaller" [activeUser]="activeUser" [currentChatUser]="currentChatUser" (callEnded)="callEnded($event)"></app-video>
-      </ng-template>
-      
+      <app-chat-window [currentChatUser]="currentChatUser"></app-chat-window>
     </ng-template>
   </div>
 </div>
