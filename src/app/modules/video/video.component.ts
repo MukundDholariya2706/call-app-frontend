@@ -1,15 +1,11 @@
 import { SocketService } from 'src/app/services/socket.service';
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Inject,
-  Input,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -35,10 +31,10 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   public getUserMediaNotSupport: boolean = false;
   public showVideo: boolean = true;
 
-  // peer connection declaration
+  // Peer connection declaration
   private rtcPeerConnection!: RTCPeerConnection;
 
-  // ice server's
+  // Ice server's
   iceServers = {
     iceServers: [
       { urls: 'stun:stun.services.mozilla.com' },
@@ -50,7 +46,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public sanitizer: DomSanitizer,
     private socketService: SocketService,
     public dialogRef: MatDialogRef<VideoComponent>,
-    private cd: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -65,8 +60,9 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (this.isCaller) {
-      this.receiverPickupCallListen();
+      this.isReceiverPickupTheCallListen();
     }
+    this.listenCandidateEvent();
   }
 
   // get peer video and audio
@@ -91,10 +87,13 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           // Assign the stream to the video element
           userVideoElemet.srcObject = stream;
 
+          this.videoStream = stream;
+
           // Play the video
           userVideoElemet.play();
 
-          this.videoStream = stream;
+          // enable connection
+          this.setupConnection();
         })
         .catch((error: any) => {
           console.log('Error accessing webcam:', error);
@@ -105,7 +104,8 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getReceiverMedia() {
+  // get receiver video and audio access from browser
+  getReceiverMedia(): void {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({
@@ -113,16 +113,19 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           video: this.showVideo ? true : false,
         })
         .then((stream: MediaStream) => {
-          const peerVideoElemet: HTMLVideoElement =
-            this.peerVideo.nativeElement;
+          const userVideoElemet: HTMLVideoElement =
+            this.userVideo.nativeElement;
 
           // Assign the stream to the video element
-          peerVideoElemet.srcObject = stream;
-
-          // Play the video
-          peerVideoElemet.play();
+          userVideoElemet.srcObject = stream;
 
           this.videoStream = stream;
+
+          // Play the video
+          userVideoElemet.play();
+
+          this.setupConnection();
+          this.listenOfferEvent();
         })
         .catch((error: any) => {
           console.log('Error accessing webcam:', error);
@@ -144,6 +147,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  // cancel video stream when call is ended
   cancelVideoStream() {
     if (this.videoStream) {
       this.videoStream
@@ -176,35 +180,117 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getReceiverMedia();
   }
 
-  // caller listen reveiverPick a call
-  receiverPickupCallListen() {
+  // caller listen reveiverPick a call - creater
+  isReceiverPickupTheCallListen() {
     this.socketService
       .listen('receiverPickUpCallEmit')
-      .subscribe((data: any) => {
+      .subscribe(async (data: any) => {
         this.isReceiverPickupCalled = true;
-        this.cd.detectChanges();
 
         // get media of receiver user
         this.getUserMedia();
       });
   }
 
-  connectionReadyFun() {
+  // caller / receciver side use function for create connection
+  async setupConnection() {
     this.rtcPeerConnection = new RTCPeerConnection(this.iceServers);
-    this.rtcPeerConnection.onicecandidate = (event) => {
-      //
+    this.rtcPeerConnection.onicecandidate = (
+      event: RTCPeerConnectionIceEvent
+    ) => {
+      if (event.candidate) {
+        const eventObj = {
+          candidate: event.candidate,
+          fromUser: this.isCaller ? this.callerDetails : this.receiverDetails,
+          toUser: this.isCaller ? this.receiverDetails : this.callerDetails,
+        };
+
+        this.socketService.emit('candidate', eventObj);
+      }
     };
-    this.rtcPeerConnection.ontrack = () => {
-      //
+
+    this.rtcPeerConnection.ontrack = (event: RTCTrackEvent) => {
+      const peerVideoElement: HTMLVideoElement = this.peerVideo.nativeElement;
+
+      peerVideoElement.srcObject = event.streams[0];
+      peerVideoElement.onloadedmetadata = (e) => {
+        peerVideoElement.play();
+      };
     };
+
     this.rtcPeerConnection.addTrack(
-      this.videoStream.getTracks()[0],
+      this.videoStream.getTracks()?.[0],
       this.videoStream
     );
     this.rtcPeerConnection.addTrack(
-      this.videoStream.getTracks()[1],
+      this.videoStream.getTracks()?.[1],
       this.videoStream
     );
+
+    if (this.isCaller) {
+      this.createRTCofferFun();
+    }
+
+    // listen for answer event
+    this.listenAnswerEvent();
+  }
+
+  // create RTC offer
+  async createRTCofferFun() {
+    this.rtcPeerConnection
+      .createOffer()
+      .then((offer: RTCSessionDescriptionInit) => {
+        this.rtcPeerConnection.setLocalDescription(offer);
+        const emitData = {
+          fromUser: this.callerDetails,
+          toUser: this.receiverDetails,
+          offer: offer,
+        };
+
+        this.socketService.emit('offer', emitData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // create RTC answer
+  createRTCanswerFun(offer: any) {
+    this.rtcPeerConnection.setRemoteDescription(offer);
+    this.rtcPeerConnection
+      .createAnswer()
+      .then((answer: RTCSessionDescriptionInit) => {
+        this.rtcPeerConnection.setLocalDescription(answer);
+
+        const eventObj = {
+          fromUser: this.receiverDetails,
+          toUser: this.callerDetails,
+          answer: answer,
+        };
+        this.socketService.emit('answer', eventObj);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  listenCandidateEvent() {
+    this.socketService.listen('candidate').subscribe((candidate: any) => {
+      let icecandidate = new RTCIceCandidate(candidate);
+      this.rtcPeerConnection.addIceCandidate(icecandidate);
+    });
+  }
+
+  listenOfferEvent() {
+    this.socketService.listen('offer').subscribe((offer: any) => {
+      this.createRTCanswerFun(offer);
+    });
+  }
+
+  listenAnswerEvent() {
+    this.socketService.listen('answer').subscribe((answer: any) => {
+      this.rtcPeerConnection.setRemoteDescription(answer);
+    });
   }
 
   ngOnDestroy(): void {
