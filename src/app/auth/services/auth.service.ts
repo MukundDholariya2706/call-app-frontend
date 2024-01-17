@@ -58,7 +58,7 @@ export class AuthService {
       tap((res: any) => {
         if (res.status) {
           this.localstorageService.setLocalStore('user', res.data);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         }
       })
     );

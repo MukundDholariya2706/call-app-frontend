@@ -29,7 +29,8 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   public videoStream!: MediaStream;
 
   public getUserMediaNotSupport: boolean = false;
-  public showVideo: boolean = true;
+  public videoIsHide: boolean = false;
+  public miceIsMute: boolean = false;
 
   // Peer connection declaration
   private rtcPeerConnection!: RTCPeerConnection;
@@ -78,7 +79,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       navigator.mediaDevices
         .getUserMedia({
           audio: true,
-          video: this.showVideo ? true : false,
+          video: true,
         })
         .then((stream: MediaStream) => {
           const userVideoElemet: HTMLVideoElement =
@@ -110,7 +111,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       navigator.mediaDevices
         .getUserMedia({
           audio: true,
-          video: this.showVideo ? true : false,
+          video: true,
         })
         .then((stream: MediaStream) => {
           const userVideoElemet: HTMLVideoElement =
@@ -291,6 +292,28 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.socketService.listen('answer').subscribe((answer: any) => {
       this.rtcPeerConnection.setRemoteDescription(answer);
     });
+  }
+
+  // mute audio
+  muteAudio() {
+    this.miceIsMute = !this.miceIsMute;
+    if(!this.videoStream) return;
+    if(this.miceIsMute) {
+      this.videoStream.getTracks()[0].enabled = false
+    } else {
+      this.videoStream.getTracks()[0].enabled = true;
+    }
+  }
+
+  // hide user video
+  hideVideo() {
+    this.videoIsHide = !this.videoIsHide;
+    if(!this.videoStream) return;
+    if(this.videoIsHide) {
+      this.videoStream.getTracks()[1].enabled = false
+    } else {
+      this.videoStream.getTracks()[1].enabled = true;
+    }
   }
 
   ngOnDestroy(): void {

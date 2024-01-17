@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { ChatService } from '../services/chat.service';
@@ -11,7 +11,7 @@ import { VideoComponent } from '../video/video.component';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss'],
 })
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent implements OnInit, OnChanges {
   @Input() currentChatUser: any;
   @Output() videoCallInit = new EventEmitter();
 
@@ -32,6 +32,10 @@ export class ChatWindowComponent implements OnInit {
   ngOnInit(): void {
     this.loginUser = this.authService.activeUserDetails();
     this.receivedMessage();
+  }
+
+  ngOnChanges(): void{
+    this.newMessage = '';
     this.getChatHistory();
   }
 
