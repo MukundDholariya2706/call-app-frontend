@@ -1,3 +1,4 @@
+import { LocalstorageService } from './localstorage.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
@@ -11,17 +12,18 @@ export class SocketService {
   public socket!: Socket;
   public user: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private localstorageService: LocalstorageService) {}
 
   startSocket() {
-    
-    this.user = this.authService.activeUserDetails();
+    this.user = this.localstorageService.getLocalStore('user');
 
     if (!this.socket || (this.socket && !this.socket.connected)) {
       this.socket = io(environment.socketUrl);
       this.socket.emit('room', {
         id: this.user._id,
       });
+
+      this.putOnlineStatus();
     }
   }
 
@@ -39,5 +41,17 @@ export class SocketService {
 
   closeSocket() {
     this.socket.close();
+  }
+
+  putOnlineStatus() {
+    if (this.user) {
+      this.socket.emit('userConnect', { ...this.user, isOnline: true });
+    }
+  }
+
+  putOfflineStatus() {
+    if (this.user) {
+      this.socket.emit('userDisconnect', { ...this.user, isOnline: false });
+    }
   }
 }

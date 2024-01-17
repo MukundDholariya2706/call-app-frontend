@@ -46,7 +46,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    window.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        console.log('visible');
+        this.userBackToTheWindow();
+      } else if (document.visibilityState === 'hidden') {
+        console.log('hidden');
+        this.userLeftTheWindow();
+      }
+    });
+
     this.activeUser = this.authService.activeUserDetails();
+
+    this.userConnected();
+    this.userDisconnected();
 
     if (this.activeUser) {
       // this.socketService.startSocket();
@@ -93,6 +106,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   handleChatChange(event: any) {
     this.currentChatUser = event;
+  }
+
+  userBackToTheWindow() {
+    this.socketService.emit('userConnect', {...this.activeUser, isOnline: true});
+  }
+
+  userLeftTheWindow() {
+    this.socketService.emit('userDisconnect', {...this.activeUser, isOnline: false});
+    console.log('called');
+  }
+
+  userConnected() {
+    this.socketService.listen('userConnected').subscribe((data: any) => {
+      if (this.contacts.length != 0 && Object.values(data).length != 0) {
+        for (let e of this.contacts) {
+          if (e._id == data._id) {
+            e.isOnline = true;
+          }
+        }
+      }
+    });
+  }
+
+  userDisconnected() {
+    this.socketService.listen('userDisconnected').subscribe((data: any) => {
+      if (this.contacts.length != 0 && Object.values(data).length != 0) {
+        for (let e of this.contacts) {
+          if (e._id == data._id) {
+            e.isOnline = false;
+          }
+        }
+      }
+    });
   }
 
   ngAfterViewInit(): void {}

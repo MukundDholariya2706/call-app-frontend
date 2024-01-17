@@ -1,3 +1,4 @@
+import { SocketService } from 'src/app/services/socket.service';
 import { LocalstorageService } from './../../services/localstorage.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +16,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private localstorageService: LocalstorageService
+    private localstorageService: LocalstorageService,
+    private socketService: SocketService
   ) {}
 
   async getAvatarImages(): Promise<SafeResourceUrl[]> {
@@ -67,6 +69,7 @@ export class AuthService {
   logoutUser(payload: any = {}): any {
     return this.http.post(environment.apiUrl + '/user/logout', payload).pipe(tap((res: any) => {
       if(res.status){
+        this.socketService.putOfflineStatus();
         this.localstorageService.clearStorage();
         this.router.navigate(['/login']);
       }
