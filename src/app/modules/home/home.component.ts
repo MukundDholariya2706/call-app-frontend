@@ -26,9 +26,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public currentChatUser: any;
   public dialogRef!: MatDialogRef<VideoComponent>;
 
-  // rtc-peer-server
-  private rtcPeerConnection!: RTCPeerConnection;
-
   // stun server list
   private iceServers = {
     iceServers: [

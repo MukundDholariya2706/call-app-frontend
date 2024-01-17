@@ -95,9 +95,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
     this.callendFromReciver();
 
-    this.dialogRef.afterClosed().subscribe((result) => {
-      console.log(result, '');
-    });
+    this.dialogRef.afterClosed().subscribe((result) => {});
   }
 
   // call end/cancel from reciver
