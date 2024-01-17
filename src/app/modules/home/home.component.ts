@@ -75,8 +75,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   listenAnyOneIsCalling() {
     this.socketService.listen('anyOneCalling').subscribe((data: any) => {
-      console.log(data, 'anyonecalling');
-
       this.callEndByCaller();
 
       this.dialogRef = this.dialog.open(VideoComponent, {
