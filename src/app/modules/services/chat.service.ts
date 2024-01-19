@@ -12,5 +12,9 @@ export class ChatService {
   getChatHistory(id: string){
     return this.http.get(environment.apiUrl + '/user/chatHistory/' + id);
   }
+
+  sendMessageToUser(payload: any){
+    return this.http.post(environment.apiUrl + '/user/sendMessageToUser', payload).subscribe();
+  }
   
 }

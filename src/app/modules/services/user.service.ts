@@ -12,4 +12,11 @@ export class UserService {
   getAllUserList(){
     return this.http.get(environment.apiUrl + "/user/allusers");
   }
+
+  sendUserPushNotificationEndPoint(payload: any){
+    console.log('called')
+    return this.http.post(environment.apiUrl + "/user/pushNotification", payload).subscribe((res: any) => {
+      console.log(res, 'res')
+    })
+  }
 }

@@ -52,6 +52,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
     this.messages.push(messageObj);
     this.socketService.emit('sendMessage', messageObj);
+    this.chatService.sendMessageToUser(messageObj);
     this.newMessage = '';
     const value = document.getElementById('focus');
     value?.focus();

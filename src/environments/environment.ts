@@ -2,13 +2,15 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const baseUrl = 'http://localhost';
+const baseUrl = 'http://172.16.0.210';
 const backendPort = 3001;
 
 export const environment = {
-  production: false,
+  production: true,
+  name: 'local',
   apiUrl: `${baseUrl}:${backendPort}`,
   socketUrl: `${baseUrl}:${backendPort}`,
+  webPushPublicKey: 'BIIuxA2Hv0Ol-XFXQe4Wkqtc7sP83dqxb2eECPj3zKpyc3kCXfNwg0ObiG5U4xNzlrw5DaKwC9reOL1G1NurXk8'
 };
 
 /*

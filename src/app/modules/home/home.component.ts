@@ -1,3 +1,4 @@
+import { PushNotificationService } from './../../services/push-notification.service';
 import { VideoComponent } from './../video/video.component';
 import { SocketService } from './../../services/socket.service';
 import {
@@ -42,6 +43,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private userService: UserService,
     private socketService: SocketService,
+    private pushNotificationService: PushNotificationService,
     private dialog: MatDialog
   ) {}
 
@@ -63,6 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     if (this.activeUser) {
       // this.socketService.startSocket();
+      this.pushNotificationService.registerPushNotificationSubscription();
       this.listenAnyOneIsCalling();
     }
 
