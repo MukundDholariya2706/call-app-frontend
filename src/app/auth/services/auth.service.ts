@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, tap } from 'rxjs';
 import { Response } from 'src/app/interface/response';
 import { Router } from '@angular/router';
+import { RegisterUser } from 'src/app/interface/register-user';
 
 @Injectable({
   providedIn: 'root',
@@ -44,8 +45,8 @@ export class AuthService {
     return data;
   }
 
-  registerUser(payload: any): Observable<Response> {
-    return this.http.post<Response>(
+  registerUser(payload: any): Observable<Response<RegisterUser>> {
+    return this.http.post<Response<RegisterUser>>(
       environment.apiUrl + '/user/register',
       payload
     );
@@ -67,13 +68,15 @@ export class AuthService {
   }
 
   logoutUser(payload: any = {}): any {
-    return this.http.post(environment.apiUrl + '/user/logout', payload).pipe(tap((res: any) => {
-      if(res.status){
-        this.socketService.putOfflineStatus();
-        this.localstorageService.clearStorage();
-        this.router.navigate(['/login']);
-      }
-    }));
+    return this.http.post(environment.apiUrl + '/user/logout', payload).pipe(
+      tap((res: any) => {
+        if (res.status) {
+          this.socketService.putOfflineStatus();
+          this.localstorageService.clearStorage();
+          this.router.navigate(['/login']);
+        }
+      })
+    );
   }
 
   getAuthorizationToken() {
@@ -90,6 +93,4 @@ export class AuthService {
   activeUserDetails() {
     return this.localstorageService.getLocalStore('user');
   }
-
-  
 }
