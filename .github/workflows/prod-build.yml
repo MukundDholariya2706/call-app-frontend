@@ -32,3 +32,11 @@ jobs:
           destination-repository-name: "call-app-frontend-build"
           user-email: "mukunddtridhyatech@gmail.com"
           target-branch: "main"
+      - name: LS
+        run: ls -l
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_USER_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_USER_SECRET_ACCESS_KEY_ID}}
+          aws-region: us-east-1
