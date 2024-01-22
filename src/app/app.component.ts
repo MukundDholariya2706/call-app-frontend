@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
     private pushNotificationService: PushNotificationService
   ) {
     console.log(environment.apiUrl, 'apiUrl');
+    console.log(environment.production, 'production mode');
 
     // start socket connection
     this.socketService.startSocket();
