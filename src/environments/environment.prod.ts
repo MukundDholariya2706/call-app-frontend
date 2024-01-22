@@ -1,5 +1,5 @@
 // const baseUrl = 'https://call-app-backend.vercel.app';
-const baseUrl = 'http://54.174.86.25';
+const baseUrl = 'http://34.224.221.61';
 const backendPort = 3001;
 
 export const environment = {
