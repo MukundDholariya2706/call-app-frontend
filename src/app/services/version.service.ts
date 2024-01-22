@@ -20,7 +20,7 @@ export class VersionService {
           console.log(error, 'error');
         });
     } else {
-      console.log('swUpdate is diabled');
+      console.log('swUpdate is disabled');
     }
   }
 }
