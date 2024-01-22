@@ -28,7 +28,7 @@
       </span>
     </div>
   </div>
-  <div class="chat-messages">
+  <div class="chat-messages" #scroll [scrollTop]="scroll.scrollHeight">
     <!-- loop -->
     <ng-container *ngIf="messages.length != 0">
       <ng-container *ngFor="let message of messages">
