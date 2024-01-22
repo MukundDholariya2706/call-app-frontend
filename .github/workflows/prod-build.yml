@@ -27,7 +27,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
         with:
-          source-directory: dist/call-app-frontend-build
+          source-directory: dist/call-app-frontend
           destination-github-username: "MukundDholariya2706"
           destination-repository-name: "call-app-frontend-build"
           user-email: "mukunddtridhyatech@gmail.com"
