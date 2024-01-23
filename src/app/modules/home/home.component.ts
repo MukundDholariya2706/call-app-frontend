@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  listenAnyOneIsCalling() {
+  listenAnyOneIsCalling(): void {
     this.socketService.listen('anyOneCalling').subscribe((data: any) => {
       this.callEndByCaller();
 
@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // call end/cancel from caller
-  callEndByCaller() {
+  callEndByCaller(): void {
     this.socketService
       .listen('callendFromCallerEmit')
       .subscribe((data: any) => {
@@ -105,20 +105,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  handleChatChange(event: any) {
+  handleChatChange(event: any): void {
     this.currentChatUser = event;
   }
 
-  userBackToTheWindow() {
+  userBackToTheWindow(): void {
     this.socketService.emit('userConnect', {...this.activeUser, isOnline: true});
   }
 
-  userLeftTheWindow() {
+  userLeftTheWindow(): void {
     this.socketService.emit('userDisconnect', {...this.activeUser, isOnline: false});
     console.log('called');
   }
 
-  userConnected() {
+  userConnected(): void {
     this.socketService.listen('userConnected').subscribe((data: any) => {
       if (this.contacts.length != 0 && Object.values(data).length != 0) {
         for (let e of this.contacts) {
@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  userDisconnected() {
+  userDisconnected(): void {
     this.socketService.listen('userDisconnected').subscribe((data: any) => {
       if (this.contacts.length != 0 && Object.values(data).length != 0) {
         for (let e of this.contacts) {

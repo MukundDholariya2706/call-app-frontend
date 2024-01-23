@@ -7,16 +7,15 @@ import { SwUpdate } from '@angular/service-worker';
 export class VersionService {
   constructor(private swUpdate: SwUpdate) {}
 
-  chcekNewUpdateIsAvailable() {
+  chcekNewUpdateIsAvailable(): void {
     if (this.swUpdate.isEnabled) {
       this.swUpdate
         .checkForUpdate()
-        .then((res: any) => {
+        .then((res: boolean) => {
           console.log(res, 'update is available');
           if(res) window.location.reload();
         })
-        .catch((err) => {})
-        .catch((error: any) => {
+        .catch((error) => {
           console.log(error, 'error');
         });
     } else {

@@ -7,11 +7,11 @@ export class LocalstorageService {
 
   constructor() {}
 
-  setLocalStore(key: string, data: any) {
+  setLocalStore(key: string, data: any): void {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  getLocalStore(key: string) {
+  getLocalStore(key: string){
     let data: any='';
     if(!!key && localStorage.getItem(key) !== undefined && localStorage.getItem(key) !== null) {
       let localData:any = localStorage.getItem(key);
@@ -27,7 +27,7 @@ export class LocalstorageService {
     return localStorage.removeItem(key);
   }
 
-  clearStorage() {
+  clearStorage(): void {
     localStorage.clear();
   }
 }

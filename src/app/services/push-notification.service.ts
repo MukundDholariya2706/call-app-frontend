@@ -13,7 +13,7 @@ export class PushNotificationService {
     private userService: UserService
   ) {}
 
-  registerPushNotificationSubscription() {
+  registerPushNotificationSubscription(): void {
     if (!this.swUpdate.isEnabled) {
       console.log('Notification is not enabled');
       return;
@@ -29,7 +29,7 @@ export class PushNotificationService {
       });
   }
 
-  pushNotificationListen() {
+  pushNotificationListen(): void {
     if (!this.swUpdate.isEnabled) {
       console.log('Notification is not enabled');
       return;

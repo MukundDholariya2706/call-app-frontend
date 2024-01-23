@@ -39,7 +39,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
     this.getChatHistory();
   }
 
-  sendMessage() {
+  sendMessage(): void {
     const messageObj = {
       fromUser: this.loginUser?._id,
       toUser: this.currentChatUser?._id,
@@ -58,13 +58,13 @@ export class ChatWindowComponent implements OnInit, OnChanges {
     value?.focus();
   }
 
-  receivedMessage() {
+  receivedMessage(): void {
     this.socketService.listen('receiveMessage').subscribe((data: any) => {
       this.messages.push(data);
     });
   }
 
-  getChatHistory() {
+  getChatHistory(): void {
     this.chatService
       .getChatHistory(this.currentChatUser._id)
       .subscribe((data: any) => {
@@ -76,7 +76,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
       });
   }
 
-  startVideoCall(currentChatUser: any, loginUser: any) {
+  startVideoCall(currentChatUser: any, loginUser: any): void {
     this.dialogRef = this.dialog.open(VideoComponent, {
       width: '500px',
       height: '300px',
@@ -100,7 +100,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
   }
 
   // call end/cancel from reciver
-  callendFromReciver(){
+  callendFromReciver(): void{
     this.socketService.listen('callendFromReceiverEmit').subscribe((data: any) => {
       if(data.callend){
         this.dialogRef.close();

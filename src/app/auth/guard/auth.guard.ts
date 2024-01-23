@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     console.log('AuthGuard triggered for route:', state.url);
     // Condition 1: If checkLogin is undefined, go to the login page
     const isUserLoggedIn = this.authService.checkLogin();
-    if (isUserLoggedIn === undefined) {
+    if (!isUserLoggedIn) {
       return this.router.createUrlTree(['..', 'login']);
     }
 

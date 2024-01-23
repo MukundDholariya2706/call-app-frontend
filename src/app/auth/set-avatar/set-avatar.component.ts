@@ -17,22 +17,22 @@ export class SetAvatarComponent implements OnInit {
     this.getProfileImages();
   }
 
-  async getProfileImages() {
+  async getProfileImages(): Promise<void> {
     this.isAvatarsLoad = false;
     this.avatars = (await this.authService.getAvatarImages()) as string[];
     this.isAvatarsLoad = true;
   }
 
-  refreshAvatar() {
+  refreshAvatar(): void {
     this.selectedAvatar = undefined;
     this.getProfileImages();
   }
 
-  setSelectedAvatar(index: number) {
+  setSelectedAvatar(index: number): void {
     this.selectedAvatar = index;
   }
 
-  setAvatar() {
+  setAvatar(): void {
     if (this.selectedAvatar != undefined) {
       this.authService
         .setProfileAvatar({

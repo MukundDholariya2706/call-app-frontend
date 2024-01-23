@@ -27,7 +27,7 @@ export class SocketService {
     }
   }
 
-  listen(eventName: string) {
+  listen(eventName: string): Observable<any> {
     return new Observable((observer: any) => {
       this.socket.on(eventName, (msg: any) => {
         observer.next(msg);
@@ -35,21 +35,21 @@ export class SocketService {
     });
   }
 
-  emit(eventName: string, data?: any) {
+  emit(eventName: string, data?: any): void {
     this.socket.emit(eventName, data);
   }
 
-  closeSocket() {
+  closeSocket(): void {
     this.socket.close();
   }
 
-  putOnlineStatus() {
+  putOnlineStatus(): void {
     if (this.user) {
       this.socket.emit('userConnect', { ...this.user, isOnline: true });
     }
   }
 
-  putOfflineStatus() {
+  putOfflineStatus(): void {
     if (this.user) {
       this.socket.emit('userDisconnect', { ...this.user, isOnline: false });
     }

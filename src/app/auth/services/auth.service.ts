@@ -1,3 +1,4 @@
+import { User } from './../../interface/user';
 import { SocketService } from 'src/app/services/socket.service';
 import { LocalstorageService } from './../../services/localstorage.service';
 import { Injectable } from '@angular/core';
@@ -45,15 +46,15 @@ export class AuthService {
     return data;
   }
 
-  registerUser(payload: any): Observable<Response<RegisterUser>> {
-    return this.http.post<Response<RegisterUser>>(
+  registerUser(payload: RegisterUser): Observable<Response> {
+    return this.http.post<Response>(
       environment.apiUrl + '/user/register',
       payload
     );
   }
 
-  loginUser(payload: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/user/login', payload);
+  loginUser(payload: { email: string; password: string; }): Observable<Response> {
+    return this.http.post<Response>(environment.apiUrl + '/user/login', payload);
   }
 
   setProfileAvatar(payload: { image: string }) {
@@ -67,7 +68,7 @@ export class AuthService {
     );
   }
 
-  logoutUser(payload: any = {}): any {
+  logoutUser(payload: any = {}): Observable<Response> {
     return this.http.post(environment.apiUrl + '/user/logout', payload).pipe(
       tap((res: any) => {
         if (res.status) {
@@ -79,18 +80,18 @@ export class AuthService {
     );
   }
 
-  getAuthorizationToken() {
+  getAuthorizationToken(): string {
     return this.localstorageService.getLocalStore('auth_token');
   }
 
-  checkLogin() {
+  checkLogin(): boolean {
     if (!!this.localstorageService.getLocalStore('auth_token')) {
       return true;
     }
     return false;
   }
 
-  activeUserDetails() {
+  activeUserDetails(): User {
     return this.localstorageService.getLocalStore('user');
   }
 }

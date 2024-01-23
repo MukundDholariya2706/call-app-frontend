@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RegisterUser } from 'src/app/interface/register-user';
 
 @Component({
   selector: 'app-register',
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.isSubmit = true;
 
     if (this.registerForm.invalid) return;
@@ -46,7 +47,7 @@ export class RegisterComponent implements OnInit {
     const payload = { ...this.registerForm.value };
     delete payload.confirm_password;
 
-    this.authService.registerUser(payload).subscribe((res) => {
+    this.authService.registerUser(payload as RegisterUser).subscribe((res) => {
       if (res.status) {
         this.router.navigate(['..', 'login']);
         this._snackBar.open(res.message, 'Close', {
