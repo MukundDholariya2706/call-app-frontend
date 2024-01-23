@@ -32,4 +32,3 @@ jobs:
           destination-repository-name: "call-app-frontend-build"
           user-email: "mukunddtridhyatech@gmail.com"
           target-branch: "main"
-          commit-message: "Build - ${{date}}"
